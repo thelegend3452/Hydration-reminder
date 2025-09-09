@@ -5,7 +5,7 @@ class HydrationReminderApp(rumps.App):
     def __init__(self):
         super().__init__("💧 Hydration")
 
-        self.timer = rumps.Timer(self.show_alert, 30 * 60)
+        self.timer = rumps.Timer(self.show_alert, 10 * 60)
         self.timer.start()
         self.first_run = True
         self.is_running = False
@@ -17,6 +17,7 @@ class HydrationReminderApp(rumps.App):
     def set_30min(self, _):
         self.timer.stop()
         self.timer.interval = 30 * 60
+        self.first_run = True
         self.timer.start()
         self.show_confirmation("Timer set for 30 minutes")
         
@@ -25,8 +26,9 @@ class HydrationReminderApp(rumps.App):
     def set_1hour(self, _):
         self.timer.stop()
         self.timer.interval = 60 * 60
+        self.first_run = True
         self.timer.start()
-        self.show_alert("Hydration!", "Timer set for 1 hour")
+        self.show_confirmation("Timer set for 1 hour")
         
     def show_confirmation(self, message):
         command = f'''osascript -e 'display dialog "{message}" with title "Hydration" buttons {{"OK"}} default button "OK"' '''
@@ -34,11 +36,15 @@ class HydrationReminderApp(rumps.App):
 
 
 
-    def show_alert(self, title="Hydration!", message="Time to hydrate"):
+    def show_alert(self, sender):
         if self.first_run:
             self.first_run = False
             return
-        command = f'''osascript -e 'display dialog "{message}" with title "{title}" buttons {{"OK"}} default button "OK"' '''
+        message = "Time to Hydrate!"
+        title = "Hydration App"
+        command = f'''
+        osascript -e 'display dialog "{message}" with title "{title}" buttons {{"OK"}} default button "OK"'
+        '''
         os.system(command)
 
 if __name__ == "__main__":
