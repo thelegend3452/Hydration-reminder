@@ -1,3 +1,0 @@
-([('hydrator',
-   '/Users/asmaarabid/schoolpython/personelProjects/Hydration/dist/hydrator',
-   'EXECUTABLE')],)
